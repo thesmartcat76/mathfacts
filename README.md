@@ -1,1 +1,1 @@
-This is math facts +, -, *, / up to 12 +, -, *, /.
+This is math facts +, -, *, / up to 12.
