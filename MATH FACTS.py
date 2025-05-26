@@ -10,28 +10,28 @@ def generate_random_math_fact(max_value=12):
     if operation == '+':
         num2 = random.randint(0, max_value)
         answer = num1 + num2
-        return f"{num1} + {num2} = ______________"
+        return f"{num1} + {num2} = {answer}"
     elif operation == '-':
         num2 = random.randint(0, max_value)
         if num1 < num2:
             num1, num2 = num2, num1
         answer = num1 - num2
-        return f"{num1} - {num2} = ______________"
+        return f"{num1} - {num2} = {answer}"
     elif operation == '*':
         num2 = random.randint(0, max_value)
         answer = num1 * num2
-        return f"{num1} * {num2} = ______________"
+        return f"{num1} * {num2} = {answer}"
     else:  # operation == '/'
         factors = [i for i in range(1, num1 + 1) if num1 % i == 0 and i <= max_value and num1 // i <= max_value]
         if not factors:
             # If no suitable divisor is found, default to multiplication
             num2 = random.randint(0, max_value)
             answer = num1 * num2
-            return f"{num1} * {num2} = ______________"
+            return f"{num1} * {num2} = {answer}"
         else:
             num2 = random.choice(factors)
             answer = num1 // num2
-            return f"{num1} / {num2} = ______________"
+            return f"{num1} / {num2} = {answer}"
 
 def update_fact():
     """Updates the math fact displayed in the label."""
@@ -55,4 +55,3 @@ new_fact_button.pack(pady=10)
 
 # Start the Tkinter event loop
 window.mainloop()
-
