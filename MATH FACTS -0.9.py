@@ -55,3 +55,4 @@ new_fact_button.pack(pady=10)
 
 # Start the Tkinter event loop
 window.mainloop()
+
