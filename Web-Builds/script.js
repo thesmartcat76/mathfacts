@@ -1,4 +1,3 @@
-getQuestion();
 let qDiv = document.getElementById("questions");
 let aContainer = document.getElementById("answersContainer");
 let currentAnswer = '';
@@ -45,3 +44,5 @@ document.addEventListener('keydown', function(event) {
         getQuestion();
     }
 });
+
+getQuestion();
