@@ -1,3 +1,4 @@
+getQuestion();
 let qDiv = document.getElementById("questions");
 let aContainer = document.getElementById("answersContainer");
 let currentAnswer = '';
