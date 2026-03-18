@@ -25,9 +25,11 @@ function clearAnswer() {
     currentAnswer = '';
     document.getElementById('currentAnswer').innerHTML = '';
 }
+let correctAnswer = null;
+let userAnswer = null;
 function checkAnswer() {
-    let userAnswer = parseInt(currentAnswer);
-    let correctAnswer = eval(questionsArr[questionIDX]);
+    correctAnswer = eval(questionsArr[questionIDX]);
+    userAnswer = parseInt(currentAnswer);
     if (userAnswer == correctAnswer) {
         clearAnswer();
         qDiv.innerHTML = 'Correct! 🎉 🥳 🎉';
@@ -42,13 +44,17 @@ function checkAnswer() {
 document.addEventListener('keydown', function(event) {
     if (event.key >= '0' && event.key <= '9') {
         appendDigit(event.key);
-    } else if (event.key === '.' || event.key === 'Enter') {
-        checkAnswer();
-    } else if (event.key === 'Backspace') {
+        if (parseInt(currentAnswer) == eval(questionsArr[questionIDX])) {
+            checkAnswer();
+        } else if (currentAnswer.length >= 3) {
+            qDiv.innerHTML = "Wrong! Try again.";
+            sleep(3000).then(() => {
+                clearAnswer();
+                getQuestion(); // Automatically get new question
+            });
+        }
+    }else if (event.key === 'backspace') {
         clearAnswer();
-    }
-    else if (event.key === ' ' || event.key === 'Spacebar') {
-        getQuestion();
     }
 });
 
