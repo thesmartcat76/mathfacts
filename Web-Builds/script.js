@@ -3,6 +3,10 @@ let aContainer = document.getElementById("answersContainer");
 let currentAnswer = '';
 let questionIDX = 0;
 let questionsArr = ['2+2', '3-3', '10+4', '8-2', '16+4', '20-5', '5+5', '12-6', '7+3', '15-7'];
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function getQuestion() {
     questionIDX = Math.floor(Math.random() * questionsArr.length);
     if (questionIDX < questionsArr.length) {
@@ -25,12 +29,11 @@ function checkAnswer() {
     let userAnswer = parseInt(currentAnswer);
     let correctAnswer = eval(questionsArr[questionIDX]);
     if (userAnswer == correctAnswer) {
-        alert("Correct!");
         clearAnswer();
         qDiv.innerHTML = 'Correct! 🎉 🥳 🎉';
-        setTimeout(() => {}, 5000);
-        
-        getQuestion(); // Automatically get new question
+        sleep(3000).then(() => {
+            getQuestion(); // Automatically get new question
+        });
     } else {
         qDiv.innerHTML = "Wrong! Try again.";
         clearAnswer();
@@ -50,3 +53,15 @@ document.addEventListener('keydown', function(event) {
 });
 
 getQuestion();
+function generatequestions() {
+    let operations = ['+', '-'];
+    for (let i = 0; i < 10; i++) {
+        let num1 = Math.floor(Math.random() * 20) + 1;
+        let num2 = Math.floor(Math.random() * 20) + 1;
+        let op = operations[Math.floor(Math.random() * operations.length)];
+        questionsArr.push(`${num1} ${op} ${num2}`);
+    }
+}
+for (let i = 0; i < Math.floor(Math.random()* 10) - 5; i++) {
+    generatequestions();
+}
