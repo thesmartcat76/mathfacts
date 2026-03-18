@@ -1,1 +1,86 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Builds</title>
+</head>
+<body>
+<style>
+    body {
+        font-family: Arial, sans-serif, monospace, 'Times New Roman', Times, serif;
+        margin: 20px;
+        color: CanvasText;
+        background-color: Canvas;
+        color-scheme: light dark;
+    }
+    h1 {
+        padding: 10px;
+        text-align: center;
+        margin: 0 0 20px;
+    }
+    .build-list {
+        list-style-type: none;
+        padding: 0;
+    }
+    .build-item {
+        background-color: Field;
+        border: 1px solid currentColor;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    #answersContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+        .ansBTN {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: Field;
+        color: CanvasText;
+        border: 2px solid currentColor;
+        border-radius: 15%;
+    }
+    #answersContainer .ansBTN:hover {
+        background-color: Highlight;
+        color: HighlightText;
+    }
+    #answersContainer .ansBTN:active {
+        background-color: HighlightText;
+        color: Highlight;
+    }
+    #questions {
+        text-align: center;
+        font-size: auto;
+        margin-bottom: 20px;
+        height: 60px;
+        width: auto;
+    }
+    </style>
+    <h1>MATH FACTS <span><b>WE</b></span></h1>
+    <div id="questions"></div>
+    <div id="currentAnswer" style="text-align: center; font-size: 24px; margin: 20px;"></div>
+    <div id="answersContainer">
+        <button onclick="appendDigit('1')" class="ansBTN">1</button>
+        <button onclick="appendDigit('2')" class="ansBTN">2</button>
+        <button onclick="appendDigit('3')" class="ansBTN">3</button>
+        <button onclick="appendDigit('4')" class="ansBTN">4</button>
+        <button onclick="appendDigit('5')" class="ansBTN">5</button>
+        <button onclick="appendDigit('6')" class="ansBTN">6</button>
+        <button onclick="appendDigit('7')" class="ansBTN">7</button>
+        <button onclick="appendDigit('8')" class="ansBTN">8</button>
+        <button onclick="appendDigit('9')" class="ansBTN">9</button>
+        <button onclick="appendDigit('0')" class="ansBTN">0</button>
+    </div>
+    <div style="text-align: center; margin: 20px;">
+        <button onclick="checkAnswer()" class="ansBTN">Submit</button>
+        <button onclick="clearAnswer()" class="ansBTN">Clear</button>
+    </div>
+    <button onclick="getQuestion()" class="ansBTN">New Question</button>
+    <script src="script.js"></script>
+</body>
+</html>
