@@ -26,16 +26,20 @@ function checkAnswer() {
     let correctAnswer = eval(questionsArr[questionIDX]);
     if (userAnswer == correctAnswer) {
         alert("Correct!");
+        clearAnswer();
+        qDiv.innerHTML = 'Correct! 🎉 🥳 🎉';
+        setTimeout(() => {}, 5000);
+        
         getQuestion(); // Automatically get new question
     } else {
-        alert("Wrong! Try again.");
+        qDiv.innerHTML = "Wrong! Try again.";
         clearAnswer();
     }
 }
 document.addEventListener('keydown', function(event) {
     if (event.key >= '0' && event.key <= '9') {
         appendDigit(event.key);
-    } else if (event.key === 'Enter') {
+    } else if (event.key === '.' || event.key === 'Enter') {
         checkAnswer();
     } else if (event.key === 'Backspace') {
         clearAnswer();
