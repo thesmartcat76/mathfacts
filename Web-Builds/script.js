@@ -1,92 +1,102 @@
-let qDiv = document.getElementById("questions");
-let aContainer = document.getElementById("answersContainer");
+const qDiv = document.getElementById("questions");
+const currentAnswerDiv = document.getElementById("currentAnswer");
+
 let currentAnswer = '';
 let questionIDX = 0;
+let pendingTimer = null;
 let questionsArr = ['2+2', '3-3', '10+4', '8-2', '16+4', '20-5', '5+5', '12-6', '7+3', '15-7'];
+
+// Safe math evaluator — no eval()
+function safeCalc(expr) {
+    const match = expr.trim().match(/^(-?\d+)\s*([+\-])\s*(\d+)$/);
+    if (!match) return NaN;
+    const [, a, op, b] = match;
+    return op === '+' ? +a + +b : +a - +b;
+}
+
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function cancelPending() {
+    if (pendingTimer !== null) {
+        clearTimeout(pendingTimer);
+        pendingTimer = null;
+    }
 }
 
 function getQuestion() {
+    cancelPending();
     questionIDX = Math.floor(Math.random() * questionsArr.length);
-    if (questionIDX < questionsArr.length) {
-        qDiv.innerHTML = questionsArr[questionIDX];
-        currentAnswer = '';
-        document.getElementById('currentAnswer').innerHTML = '';
-    } else {
-        qDiv.innerHTML = "No more questions!";
-    }
+    qDiv.textContent = questionsArr[questionIDX];
+    currentAnswer = '';
+    currentAnswerDiv.textContent = '';
 }
+
 function appendDigit(digit) {
     currentAnswer += digit;
-    document.getElementById('currentAnswer').innerHTML = currentAnswer;
-    sleep(4500).then(() => {
-        if (parseInt(currentAnswer) == eval(questionsArr[questionIDX])) {
-            checkAnswer();
-        } else if (currentAnswer.length >= 3) {
-            qDiv.innerHTML = "Wrong! Try again.";
-            sleep(3000).then(() => {
+    currentAnswerDiv.textContent = currentAnswer;
+
+    const correct = safeCalc(questionsArr[questionIDX]);
+
+    // Auto-submit once the answer is long enough to be correct
+    if (+currentAnswer === correct) {
+        cancelPending();
+        pendingTimer = setTimeout(checkAnswer, 300);
+    } else if (currentAnswer.length >= String(Math.abs(correct) + 20).length || currentAnswer.length >= 3) {
+        cancelPending();
+        pendingTimer = setTimeout(() => {
+            qDiv.textContent = "Wrong! Try again.";
+            pendingTimer = setTimeout(() => {
                 clearAnswer();
-                getQuestion(); // Automatically get new question
-            });
-        }
-    });
+                getQuestion();
+            }, 2000);
+        }, 200);
+    }
 }
+
 function clearAnswer() {
     currentAnswer = '';
-    document.getElementById('currentAnswer').innerHTML = '';
+    currentAnswerDiv.textContent = '';
 }
-let correctAnswer = null;
-let userAnswer = null;
+
 function checkAnswer() {
-    correctAnswer = eval(questionsArr[questionIDX]);
-    userAnswer = parseInt(currentAnswer);
-    if (userAnswer == correctAnswer) {
+    cancelPending();
+    const correct = safeCalc(questionsArr[questionIDX]);
+    const user = parseInt(currentAnswer, 10);
+
+    if (user === correct) {
         clearAnswer();
-        qDiv.innerHTML = 'Correct! 🎉 🥳 🎉';
-        sleep(3000).then(() => {
-            getQuestion(); // Automatically get new question
-        });
+        qDiv.textContent = 'Correct! 🎉 🥳 🎉';
+        pendingTimer = setTimeout(getQuestion, 2500);
     } else {
-        qDiv.innerHTML = "Wrong! Try again.";
+        qDiv.textContent = "Wrong! Try again.";
         clearAnswer();
+        pendingTimer = setTimeout(getQuestion, 2000);
     }
 }
-document.addEventListener('keydown', function(event) {
+
+document.addEventListener('keydown', function (event) {
     if (event.key >= '0' && event.key <= '9') {
         appendDigit(event.key);
-        if (parseInt(currentAnswer) == eval(questionsArr[questionIDX])) {
-            checkAnswer();
-        } else if (currentAnswer.length >= 3) {
-            qDiv.innerHTML = "Wrong! Try again.";
-            sleep(3000).then(() => {
-                clearAnswer();
-                getQuestion(); // Automatically get new question
-            });
-        }
-    }else if (event.key === 'backspace') {
+    } else if (event.key === 'Backspace') {
         clearAnswer();
-    }
-});
-
-getQuestion();
-function generatequestions() {
-    let operations = ['+', '-'];
-    for (let i = 0; i < 10; i++) {
-        let num1 = Math.floor(Math.random() * 20) + 1;
-        let num2 = Math.floor(Math.random() * 20) + 1;
-        let op = operations[Math.floor(Math.random() * operations.length)];
-        questionsArr.push(`${num1} ${op} ${num2}`);
-    }
-}
-for (let i = 0; i < Math.floor(Math.random()* 10) - 5; i++) {
-    generatequestions();
-}
-let running = true
-while (running) {
-    sleep(1000).then(() => {
-        if(userAnswer === '') {
+    } else if (event.key === 'Enter') {
         checkAnswer();
     }
 });
+
+function generateQuestions(count = 10) {
+    const ops = ['+', '-'];
+    for (let i = 0; i < count; i++) {
+        const num1 = Math.floor(Math.random() * 20) + 1;
+        const num2 = Math.floor(Math.random() * 20) + 1;
+        const op = ops[Math.floor(Math.random() * ops.length)];
+        questionsArr.push(`${num1}${op}${num2}`);
+    }
 }
+
+// Generate a fixed, sensible number of extra questions (was broken: random could be negative)
+generateQuestions(10);
+
+getQuestion();
