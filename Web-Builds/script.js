@@ -20,6 +20,17 @@ function getQuestion() {
 function appendDigit(digit) {
     currentAnswer += digit;
     document.getElementById('currentAnswer').innerHTML = currentAnswer;
+    sleep(4500).then(() => {
+        if (parseInt(currentAnswer) == eval(questionsArr[questionIDX])) {
+            checkAnswer();
+        } else if (currentAnswer.length >= 3) {
+            qDiv.innerHTML = "Wrong! Try again.";
+            sleep(3000).then(() => {
+                clearAnswer();
+                getQuestion(); // Automatically get new question
+            });
+        }
+    });
 }
 function clearAnswer() {
     currentAnswer = '';
@@ -70,4 +81,12 @@ function generatequestions() {
 }
 for (let i = 0; i < Math.floor(Math.random()* 10) - 5; i++) {
     generatequestions();
+}
+let running = true
+while (running) {
+    sleep(1000).then(() => {
+        if(userAnswer === '') {
+        checkAnswer();
+    }
+});
 }
