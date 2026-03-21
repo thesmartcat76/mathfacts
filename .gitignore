@@ -3,3 +3,14 @@
 node_modules/
 *.DS_Store
 *.vscode/
+electron-builder.yml
+electron-builder.yaml
+electron-builder.json
+electron-builder.js
+electron-builder.ts
+electron-builder.config.js
+electron-builder.config.ts
+electron-builder.config.json
+electron-builder.config.yaml
+electron-builder.config.yml
+electron-build/
