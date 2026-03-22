@@ -86,14 +86,22 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
-function generateQuestions(count = 10) {
+function generateQuestions(count) {
     const ops = ['+', '-'];
     for (let i = 0; i < count; i++) {
         const num1 = Math.floor(Math.random() * 20) + 1;
         const num2 = Math.floor(Math.random() * 20) + 1;
         const op = ops[Math.floor(Math.random() * ops.length)];
+        if (num1 - num2 < 0 && op === '-') {
+            generateQuestions(1); // Avoid negative results for subtraction
+            return;
+        }else if (num1 + num2 > 20 && op === '+') {
+            generateQuestions(1); // Avoid excessively large results for addition
+            return;
+        }else {
         questionsArr.push(`${num1}${op}${num2}`);
     }
+}
 }
 
 // Generate a fixed, sensible number of extra questions (was broken: random could be negative)
