@@ -99,7 +99,7 @@ function generateQuestions(count) {
             generateQuestions(1); // Avoid excessively large results for addition
             return;
         }else {
-        questionsArr.push(`${num1}${op}${num2}`);
+            questionsArr.push(`${num1}${op}${num2}`);
     }
 }
 }
